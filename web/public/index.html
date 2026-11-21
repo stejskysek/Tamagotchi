@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamagochi | Live Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #10141f;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 460px;
+            background: #1c2231;
+            border: 1px solid #30394d;
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 15px 50px #0005;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 8px;
+            color: #65e6bb;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #96a1b6;
+            margin-bottom: 25px;
+        }
+
+        .pet {
+            text-align: center;
+            padding: 25px 12px;
+            background: #151b29;
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+
+        .pet-icon {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            object-fit: contain;
+            margin: 0 auto;
+        }
+
+        .pet-placeholder {
+            font-size: 85px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pet-name {
+            font-size: 27px;
+            font-weight: bold;
+            margin-top: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .pet-type {
+            color: #98a4b8;
+            margin-top: 6px;
+        }
+
+        .stat {
+            margin-bottom: 20px;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .bar {
+            width: 100%;
+            height: 13px;
+            background: #343c4d;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        #bar-zdravi {
+            background: #fa6262;
+        }
+
+        #bar-hlad {
+            background: #f6bd55;
+        }
+
+        #bar-unava {
+            background: #a58bfa;
+        }
+
+        #bar-stesti {
+            background: #5ce1ab;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .detail {
+            background: #151b29;
+            border-radius: 12px;
+            text-align: center;
+            padding: 16px 5px;
+        }
+
+        .detail-value {
+            font-size: 23px;
+            font-weight: bold;
+            color: #65e6bb;
+            margin-bottom: 6px;
+        }
+
+        .detail-label {
+            color: #98a4b8;
+            font-size: 13px;
+        }
+
+        .connection {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 25px;
+            color: #98a4b8;
+            font-size: 13px;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #888;
+        }
+
+        .dot.online {
+            background: #5ce1ab;
+            box-shadow: 0 0 10px #5ce1ab;
+        }
+
+        .dot.offline {
+            background: #fa6262;
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 20px;
+            }
+
+            .pet-icon {
+                height: 170px;
+            }
+
+            .detail-value {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>TAMAGOCHI</h1>
+        <div class="subtitle">Live Dashboard</div>
+
+        <section class="pet">
+
+            <div id="pet-placeholder" class="pet-placeholder">
+                🥚
+            </div>
+
+            <img
+                class="pet-icon"
+                id="pet-icon"
+                alt="Mazlíček"
+                style="display: none;"
+            >
+
+            <div class="pet-name" id="jmeno">
+                Načítání...
+            </div>
+
+            <div class="pet-type" id="druh">
+                Čekání na data
+            </div>
+
+        </section>
+
+        <section class="stats">
+
+            <div class="stat">
+                <div class="stat-header">
+                    <span>Zdraví</span>
+                    <span id="zdravi">0 / 100</span>
+                </div>
+                <div class="bar">
+                    <div class="bar-fill" id="bar-zdravi"></div>
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-header">
+                    <span>Hlad</span>
+                    <span id="hlad">0 / 100</span>
+                </div>
+                <div class="bar">
+                    <div class="bar-fill" id="bar-hlad"></div>
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-header">
+                    <span>Únava</span>
+                    <span id="unava">0 / 100</span>
+                </div>
+                <div class="bar">
+                    <div class="bar-fill" id="bar-unava"></div>
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-header">
+                    <span>Štěstí</span>
+                    <span id="stesti">0 / 100</span>
+                </div>
+                <div class="bar">
+                    <div class="bar-fill" id="bar-stesti"></div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="details">
+
+            <div class="detail">
+                <div class="detail-value" id="penize">0</div>
+                <div class="detail-label">Peníze</div>
+            </div>
+
+            <div class="detail">
+                <div class="detail-value" id="den">1</div>
+                <div class="detail-label">Den</div>
+            </div>
+
+            <div class="detail">
+                <div class="detail-value" id="tah">0</div>
+                <div class="detail-label">Tah</div>
+            </div>
+
+        </section>
+
+        <div class="connection">
+            <span class="dot" id="status-dot"></span>
+            <span id="status-text">
+                Připojování k serveru...
+            </span>
+        </div>
+
+    </main>
+
+    <script>
+        const API_URL = "/api/mazlicek";
+
+        const obrazky = {
+            kralik: "/photos/rabbit.png",
+            kocka: "/photos/cat.png",
+            ryba: "/photos/fish.png"
+        };
+
+        const nazvy = {
+            kralik: "Králík",
+            kocka: "Kočka",
+            ryba: "Ryba"
+        };
+
+        let aktualniDruh = null;
+
+        // Aktualizace statistiky
+        function nastavStatistiku(id, hodnota) {
+            const cislo = Number(hodnota);
+
+            const validni = Number.isFinite(cislo)
+                ? cislo
+                : 0;
+
+            const procenta = Math.max(
+                0,
+                Math.min(100, validni)
+            );
+
+            document.getElementById(id).textContent =
+                validni + " / 100";
+
+            document.getElementById("bar-" + id).style.width =
+                procenta + "%";
+        }
+
+        // Zobrazeni druhu mazlicka
+        function nastavDruh(druh) {
+            const ikona = document.getElementById("pet-icon");
+            const placeholder = document.getElementById("pet-placeholder");
+            const nazev = document.getElementById("druh");
+
+            // Znovu nenacitame stejny obrazek kazdou sekundu
+            if (aktualniDruh === druh) {
+                return;
+            }
+
+            aktualniDruh = druh;
+
+            if (obrazky[druh]) {
+                nazev.textContent = nazvy[druh];
+
+                ikona.style.display = "none";
+                placeholder.style.display = "flex";
+                placeholder.textContent = "Načítání obrázku...";
+
+                ikona.onload = function() {
+                    ikona.style.display = "block";
+                    placeholder.style.display = "none";
+                };
+
+                ikona.onerror = function() {
+                    console.error("Obrazek se nepodarilo nacist:", ikona.src);
+                    ikona.style.display = "none";
+                    placeholder.style.display = "flex";
+                    placeholder.textContent = "Obrázek nenalezen";
+                };
+
+                ikona.alt = nazvy[druh];
+                ikona.src = obrazky[druh];
+
+            } else {
+                ikona.removeAttribute("src");
+                ikona.style.display = "none";
+
+                placeholder.style.display = "flex";
+                placeholder.textContent = "🥚";
+
+                nazev.textContent = "Neznámý druh";
+            }
+        }
+
+        // Stav pripojeni k API
+        function nastavPripojeni(online) {
+            const dot = document.getElementById("status-dot");
+            const text = document.getElementById("status-text");
+
+            dot.className = online
+                ? "dot online"
+                : "dot offline";
+
+            text.textContent = online
+                ? "Připojeno k serveru"
+                : "Server není dostupný";
+        }
+
+        // Nacteni dat ze serveru
+        async function aktualizovat() {
+            try {
+                const response = await fetch(API_URL, {
+                    cache: "no-store"
+                });
+
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+
+                const data = await response.json();
+
+                document.getElementById("jmeno").textContent =
+                    data.jmeno ?? "Neznámý";
+
+                nastavDruh(data.druh);
+
+                nastavStatistiku("zdravi", data.zdravi);
+                nastavStatistiku("hlad", data.hlad);
+                nastavStatistiku("unava", data.unava);
+                nastavStatistiku("stesti", data.stesti);
+
+                document.getElementById("penize").textContent =
+                    data.penize ?? 0;
+
+                document.getElementById("den").textContent =
+                    data.den ?? 1;
+
+                document.getElementById("tah").textContent =
+                    data.tah ?? 0;
+
+                nastavPripojeni(true);
+
+            } catch (error) {
+                console.error("Chyba nacitani:", error);
+                nastavPripojeni(false);
+            }
+        }
+
+        // Prvni nacteni
+        aktualizovat();
+
+        // Aktualizace kazdou sekundu
+        setInterval(aktualizovat, 1000);
+
+    </script>
+
+</body>
+</html>
