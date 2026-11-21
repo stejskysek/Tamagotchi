@@ -11,23 +11,14 @@ This project was created as a school programming project.
 
 ### Web Dashboard
 
-The web application displays the pet's name, type and current statistics.
+<img width="472" height="755" alt="Snímek obrazovky 2026-11-21 v 11 48 55" src="https://github.com/user-attachments/assets/5189effd-809e-498b-ac99-cdc884e0e5d7" />
 
-![Tamagochi Web Dashboard](screenshots/dashboard.png)
-
-### Pet Statistics
-
-The dashboard contains progress bars for health, hunger, tiredness and happiness.
-
-![Pet Statistics](screenshots/statistics.png)
 
 ### Terminal Game
 
+<img width="387" height="360" alt="Snímek obrazovky 2026-11-21 v 11 50 12" src="https://github.com/user-attachments/assets/084f100d-00d0-420a-92c7-443469663055" />
+
 The game runs directly in the terminal and uses ASCII art to display different animals.
-
-![Terminal Game](screenshots/terminal.png)
-
-> Screenshots need to be added to the `screenshots` directory.
 
 ## ✨ Features
 
